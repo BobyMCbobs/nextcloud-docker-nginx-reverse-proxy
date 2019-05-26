@@ -101,7 +101,7 @@ Edit `docker-compose.yml`, remove references to `onlyoffice`, replace the `onlyo
       - nextcloud
 ```
 Notes:
-- IMPORTANT: any '.' / dots in `domain` must be appended with two backslashes `\\\\`, e.g: `cloud\\\\.mydomain\\\\.com`
+- IMPORTANT: any '.' / dots in `domain` must be appended with two backslashes `\\`, e.g: `cloud\\.mydomain\\.com`
 - add a `username` and `password` in the given fields
 
 ## Finalising your setup
