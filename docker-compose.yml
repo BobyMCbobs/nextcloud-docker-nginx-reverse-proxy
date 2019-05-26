@@ -1,0 +1,72 @@
+version: '3'
+
+volumes:
+  nextcloud_html:
+  nextcloud_data:
+  nextcloud_config:
+  nextcloud_apps:
+  nextcloud_db:
+  letsencrypt_data:
+  document_data:
+  document_log:
+
+services:
+  db:
+    image: mariadb:latest
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    volumes:
+      - nextcloud_db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_PASSWORD=
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=root
+
+  nextcloud:
+    image: nextcloud:latest
+    expose:
+      - '80'
+    links:
+      - nextcloud_db
+    volumes:
+      - nextcloud_html:/var/www/html
+      - nextcloud_data:/var/www/html/data
+      - nextcloud_config:/var/www/html/config
+      - nextcloud_apps:/var/www/html/apps
+    restart: always
+    depends_on:
+      - db
+
+  proxy:
+    image: linuxserver/letsencrypt:latest
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - letsencrypt_data:/config
+    restart: unless-stopped
+    environment:
+      - PUID=1050
+      - PGID=1050
+      - EMAIL=
+      - URL=
+      - SUBDOMAINS=cloud,office
+      - TZ=Pacific/Auckland
+      - ONLY_SUBDOMAINS=true
+    depends_on:
+      - nextcloud
+      - onlyoffice
+
+  onlyoffice:
+    image: onlyoffice/documentserver:latest
+    expose:
+      - '80'
+      - '443'
+    volumes:
+      - document_data:/var/www/onlyoffice/Data
+      - document_log:/var/log/onlyoffice
+    restart: unless-stopped
+    depends_on:
+      - nextcloud
+
