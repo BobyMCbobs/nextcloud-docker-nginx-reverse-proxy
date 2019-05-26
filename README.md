@@ -58,7 +58,7 @@ Set your `email` address, domain `URL`, and if necessary tweak the `SUBDOMAINS`.
 In `nginx.cfg`, adjust the value after each `server_name` to fit your set up.
 
 ## Setup
-| # | Command | Comment |  
+| # | Command |  
 | - | - |  
 | 1. | `docker-compose up -d` | Run the containers |  
 | 2. | `docker-compose logs letsencrypt` | Watch the logs until the certificates have been generated, after they have been continue onto #3 |  
