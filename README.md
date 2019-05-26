@@ -83,6 +83,8 @@ Back up your config, edit `config.php` and in the array add the lines:
 ```
 Make sure you change the value of `overwritehost` to the FQDN of your domain.
 
+Restore your Nextcloud config.
+
 ## Using CollaboraOnline instead of OnlyOffice (optional)
 Edit `docker-compose.yml`, remove references to `onlyoffice`, replace the `onlyoffice` related chunk with:
 ```yaml
