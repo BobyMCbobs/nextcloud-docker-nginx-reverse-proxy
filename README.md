@@ -106,6 +106,8 @@ Notes:
 - IMPORTANT: any '.' / dots in `domain` must be appended with two backslashes `\\`, e.g: `cloud\\.mydomain\\.com`
 - add a `username` and `password` in the given fields
 
+Update `onlyoffice` in your `nginx.cfg` to `collabora`.
+
 ## Finalising your setup
 - install the OnlyOffice or CollaboraOnline connectors in Nextcloud's apps center
 - set up a cronjob to run background jobs: (for some reason the docker container provided doesn't support background jobs via cron)
