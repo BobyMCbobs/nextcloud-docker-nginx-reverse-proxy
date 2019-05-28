@@ -27,8 +27,6 @@ services:
     image: nextcloud:latest
     expose:
       - '80'
-    links:
-      - nextcloud_db
     volumes:
       - nextcloud_html:/var/www/html
       - nextcloud_data:/var/www/html/data
