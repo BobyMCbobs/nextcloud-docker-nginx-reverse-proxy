@@ -32,6 +32,7 @@ services:
       - nextcloud_data:/var/www/html/data
       - nextcloud_config:/var/www/html/config
       - nextcloud_apps:/var/www/html/apps
+      - /etc/localtime:/etc/localtime:ro
     restart: always
     depends_on:
       - db
