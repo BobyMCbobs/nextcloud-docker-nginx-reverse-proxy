@@ -11,6 +11,7 @@ This is the basis of the configuration of my production Nextcloud server.
 - MariaDB / db
 - OnlyOffice
 - LetsEncrypt / nginx / Proxy
+- Cron
 
 ## Features
 - HTTPS enforced / only
@@ -109,14 +110,16 @@ Notes:
 Update `onlyoffice` in your `nginx.cfg` to `collabora`.
 
 ## Finalising your setup
-- install the OnlyOffice or CollaboraOnline connectors in Nextcloud's apps center
-- set up a cronjob to run background jobs: (for some reason the docker container provided doesn't support background jobs via cron)
-  1. Run `crontab -e` (as root or a user which is in the `docker` group)
-  2. Enter in `*/5 * * * * docker exec -u www-data nextclouddockernginxreverseproxy_nextcloud_1 php -f /var/www/html/cron.php`
-  3. Run `crontab -l` to verify it's installed
+### Collaborative document editing
+1. Go to Nextcloud's apps center
+2. Find and install the OnlyOffice or CollaboraOnline connectors
 
-## Issues
-Security scan on [scan.nextcloud.com](https://scan.nextcloud.com) only gives an A rating, because of __host-prefix issues.
+### Background jobs
+Important: make sure `crontab_root` is owned by `root:root` before launching the `cron` container.  
+1. set up a cronjob to run background jobs: (for some reason the docker container provided doesn't support background jobs via cron)  
+  1.1. Log into an Admin user in Nextcloud  
+  1.2. Go to Settings > Administration > Basic Settings  
+  1.3. Under 'Background jobs', toggle Webcron  
 
 ## Useful links
 - [Nextcloud reverse proxy configuration](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/reverse_proxy_configuration.html)  
