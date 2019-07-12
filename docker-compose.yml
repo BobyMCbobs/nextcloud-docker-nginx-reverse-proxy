@@ -72,7 +72,7 @@ services:
   cron:
     image: tigpt/cronjobs
     volumes:
-      - crontabs_root:/etc/crontabs/root
+      - ./crontabs_root:/etc/crontabs/root
     restart: unless-stopped
     depends_on:
       - nextcloud
