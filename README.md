@@ -1,5 +1,11 @@
 # nextcloud-docker-nginx-reverse-proxy
-This is the basis of the configuration of my production Nextcloud server.
+A Docker based Nextcloud stack.  
+
+## Features
+- HTTPS enforced / only
+- Only ports exposed are from the nginx / LetsEncrypt webserver (443 and 80)
+- Seperated office and cloud subdomains for security
+- OnlyOffice integration (can be swapped out for CollaboraOnline)
 
 ## Overview
 <a href="./high-level-overview.svg">
@@ -9,15 +15,9 @@ This is the basis of the configuration of my production Nextcloud server.
 ## Containers
 - Nextcloud
 - MariaDB / db
-- OnlyOffice
+- OnlyOffice (or [CollaboraOnline](#using-collaboraonline-instead-of-onlyoffice-optional))
 - LetsEncrypt / nginx / Proxy
 - Cron
-
-## Features
-- HTTPS enforced / only
-- Only ports exposed are from the nginx / LetsEncrypt webserver (443 and 80)
-- Seperated office and cloud subdomains for security
-- OnlyOffice integration (can be swapped out for CollaboraOnline)
 
 ## DNS setup
 | Subdomain | Service |
@@ -25,7 +25,7 @@ This is the basis of the configuration of my production Nextcloud server.
 | cloud | Nextcloud |
 | office | OnlyOffice |
 
-Note: both domains must direct to your server
+Note: both subdomains must direct to your server  
 
 ## Server dependencies
 - `docker-compose`
@@ -43,7 +43,7 @@ Set your MySQL passwords
       - MYSQL_USER=root
 ```
 
-##### letsencrypt
+##### LetsEncrypt / proxy
 Set your `email` address, domain `URL`, and if necessary tweak the `SUBDOMAINS`.
 ```yaml
     environment:
@@ -62,9 +62,9 @@ In `nginx.cfg`, adjust the value after each `server_name` to fit your set up.
 | # | Command |  
 | - | - |  
 | 1. | `docker-compose up -d` | Run the containers |  
-| 2. | `docker-compose logs letsencrypt` | Watch the logs until the certificates have been generated, after they have been continue onto #3 |  
-| 3. | `docker cp ./nginx.cfg nextclouddockernginxreverseproxy_proxy_1:/config/nginx/site-confs/default` | Install nginx config |  
-| 4. | `docker-compose restart letsencrypt` | Restart nginx |  
+| 2. | `docker-compose logs proxy` | Watch the logs until the certificates have been generated, after they have been continue onto #3 |  
+
+If you're unable to connect to some services, after the initial deployment try restarting the proxy via: `docker-compose restart proxy`.  
 
 ## Initalising your setup
 ##### Nextcloud
@@ -76,11 +76,14 @@ Backup: `docker-compose exec app cat /var/www/html/config/config.php > config.ph
 Restore: `docker cp ./config.php nextclouddockernginxreverseproxy_nextcloud_1:/var/www/html/config/config.php`  
 
 ## Configuring Nextcloud to trust the proxy
-Back up your config, edit `config.php` and in the array add the lines:
+Back up your Nextcloud config, edit `config.php` and in the array add the lines:
 ```yaml
   'overwritehost' => 'cloud.yourdomain.com',
   'overwriteprotocol' => 'https',
-  'trusted_proxies' => ['proxy'],
+  'trusted_proxies' => 
+  array(
+    0 => 'proxy'
+  ),
 ```
 Make sure you change the value of `overwritehost` to the FQDN of your domain.
 
