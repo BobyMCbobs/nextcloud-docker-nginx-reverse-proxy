@@ -11,7 +11,7 @@ services:
   db:
     image: mariadb:latest
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    restart: always
+    restart: unless-stopped
     volumes:
       - nextcloud_db:/var/lib/mysql
     environment:
@@ -29,7 +29,7 @@ services:
       - nextcloud_html:/var/www/html
     environment:
       - TZ=Pacific/Auckland
-    restart: always
+    restart: unless-stopped
     depends_on:
       - db
 
