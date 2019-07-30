@@ -9,7 +9,7 @@ volumes:
 
 services:
   db:
-    image: mariadb:latest
+    image: mariadb:10.4
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
     volumes:
@@ -22,7 +22,7 @@ services:
       - MYSQL_USER=root
 
   nextcloud:
-    image: nextcloud:latest
+    image: nextcloud:16.0.3
     expose:
       - '80'
     volumes:
@@ -34,7 +34,7 @@ services:
       - db
 
   proxy:
-    image: linuxserver/letsencrypt:latest
+    image: linuxserver/letsencrypt:letsencrypt:0.36.0-ls44
     ports:
       - '80:80'
       - '443:443'
@@ -56,7 +56,7 @@ services:
       - cron
 
   onlyoffice:
-    image: onlyoffice/documentserver:latest
+    image: onlyoffice/documentserver:5.3.4.3
     expose:
       - '80'
       - '443'
