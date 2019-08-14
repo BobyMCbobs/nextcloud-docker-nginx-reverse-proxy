@@ -1,2 +1,2 @@
 # run Nextcloud cronjob every 15mins
-*/15 * * * *  echo "$(date):: Executing Nextcloud cron" && curl https://{{ YOUR NEXTCLOUD (SUB)DOMAIN }}/cron.php
+*/15 * * * *  echo "$(date):: Executing Nextcloud cron" && curl https://my.domain.com/cron.php

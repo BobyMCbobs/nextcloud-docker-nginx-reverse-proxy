@@ -76,18 +76,11 @@ Backup: `docker-compose exec app cat /var/www/html/config/config.php > config.ph
 Restore: `docker cp ./config.php nextclouddockernginxreverseproxy_nextcloud_1:/var/www/html/config/config.php`  
 
 ## Configuring Nextcloud to trust the proxy
-Back up your Nextcloud config, edit `config.php` and in the array add the lines:
-```yaml
-  'overwritehost' => 'cloud.yourdomain.com',
-  'overwriteprotocol' => 'https',
-  'trusted_proxies' => 
-  array(
-    0 => 'proxy'
-  ),
-```
-Make sure you change the value of `overwritehost` to the FQDN of your domain.
-
-Restore your Nextcloud config.
+| Property | Command | Notes |
+| - | - | - |
+| overwritehost | `docker-compose exec --user www-data nextcloud ./occ config:system:set overwritehost --value=cloud.yourdomain.com` | Replace `cloud.yourdomain.com` with your real domain that Nextcloud will be assigned to |
+| overwriteprotocol | `docker-compose exec --user www-data nextcloud ./occ config:system:set overwriteprotocol --value=https` | - |
+| trusted_proxies | `docker-compose exec --user www-data nextcloud ./occ config:system:set trusted_proxies 0 --value=proxy` | - |
 
 ## Using CollaboraOnline instead of OnlyOffice (optional)
 Edit `docker-compose.yml`, remove references to `onlyoffice`, replace the `onlyoffice` related chunk with:
@@ -118,6 +111,7 @@ Update `onlyoffice` in your `nginx.cfg` to `collabora`.
 2. Find and install the OnlyOffice or CollaboraOnline connectors
 
 ### Background jobs
+Edit `crontab_root` replace the domain placeholder with what your Nextcloud instance will be running on.
 Important: make sure `crontab_root` is owned by `root:root` before launching the `cron` container.  
 1. set up a cronjob to run background jobs: (for some reason the docker container provided doesn't support background jobs via cron)  
   1.1. Log into an Admin user in Nextcloud  

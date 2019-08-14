@@ -2,10 +2,15 @@ version: '3'
 
 volumes:
   nextcloud_html:
+    driver: local
   nextcloud_db:
+    driver: local
   letsencrypt_data:
+    driver: local
   document_data:
+    driver: local
   document_log:
+    driver: local
 
 services:
   db:
