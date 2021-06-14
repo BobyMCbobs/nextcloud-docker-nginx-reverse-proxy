@@ -1,6 +1,14 @@
 # nextcloud-docker-nginx-reverse-proxy
 A Docker based Nextcloud stack.  
 
+## Notice
+This repo is archived.  
+I used this set up for quite some time and think it may still be good for some folks.  
+
+In seeking something that I consider better and is what I'm used to, I'm now using the official [Nextcloud Helm Chart](https://artifacthub.io/packages/helm/nextcloud/nextcloud) for deploying to Kubernetes.  
+
+Please continue using, improving, and forking!  
+
 ## Features
 - HTTPS enforced / only
 - Only ports exposed are from the nginx / LetsEncrypt webserver (443 and 80)
